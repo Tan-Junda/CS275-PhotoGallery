@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +24,7 @@ import java.util.List;
 public class PhotoGalleryFragment extends Fragment {
     private RecyclerView mPhotoRecyclerView;
     private static final String TAG = "PhotoGalleryFragment";
+    private List<GalleryItem> mItems = new ArrayList<>();
 
     public static PhotoGalleryFragment newInstance() {
         return new PhotoGalleryFragment();
@@ -49,8 +51,17 @@ public class PhotoGalleryFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_photo_gallery, container, false);
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photo_recycler_view);
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        setupAdapter();
         return v;
     }
+
+    private void setupAdapter() {
+        if (isAdded()) {
+            mPhotoRecyclerView.setAdapter(new PhotoAdapter(mItems));
+        }
+    }
+
+
     private class PhotoHolder extends RecyclerView.ViewHolder {
         private TextView mTitleTextView;
         public PhotoHolder (View itemView) {
@@ -68,7 +79,7 @@ public class PhotoGalleryFragment extends Fragment {
             mGalleryItems = galleryItems;
         }
         @Override
-        public PhotoHolder onCreateViewHolder(ViewGroup, int viewType) {
+        public PhotoHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
             TextView textView = new TextView(getActivity());
             return new PhotoHolder(textView);
         }
@@ -84,5 +95,6 @@ public class PhotoGalleryFragment extends Fragment {
         }
 
     }
+
 
 }
