@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,4 +62,27 @@ public class PhotoGalleryFragment extends Fragment {
             mTitleTextView.setText(item.toString());
         }
     }
+    private class PhotoAdapter extends RecyclerView.Adapter<PhotoHolder> {
+        private List<GalleryItem> mGalleryItems;
+        public PhotoAdapter(List<GalleryItem> galleryItems) {
+            mGalleryItems = galleryItems;
+        }
+        @Override
+        public PhotoHolder onCreateViewHolder(ViewGroup, int viewType) {
+            TextView textView = new TextView(getActivity());
+            return new PhotoHolder(textView);
+        }
+        @Override
+        public void onBindViewHolder(PhotoHolder photoHolder, int position) {
+            GalleryItem galleryItem = mGalleryItems.get(position);
+            photoHolder.bindGalleryItem(galleryItem);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mGalleryItems.size();
+        }
+
+    }
+
 }
