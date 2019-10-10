@@ -50,5 +50,15 @@ public class PhotoGalleryFragment extends Fragment {
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         return v;
     }
+    private class PhotoHolder extends RecyclerView.ViewHolder {
+        private TextView mTitleTextView;
+        public PhotoHolder (View itemView) {
+            super(itemView);
+            mTitleTextView = (TextView) itemView;
+        }
 
+        public void bindGalleryItem(GalleryItem item) {
+            mTitleTextView.setText(item.toString());
+        }
+    }
 }
