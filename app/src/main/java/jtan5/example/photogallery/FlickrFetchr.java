@@ -18,7 +18,7 @@ import java.util.List;
 
 public class FlickrFetchr {
     private static final String TAG = "FlickrFetchr";
-    private static final String API_KEY = "yourApiKeyHere";
+    private static final String API_KEY = "2093ccd60ae8751e44de505c041d8486";
     public byte[] getUrlBytes(String urlSpec) throws IOException {
         URL url = new URL(urlSpec);
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -49,7 +49,7 @@ public class FlickrFetchr {
         try {
             String url = Uri.parse("https://api.flickr.com/services/rest/")
                     .buildUpon()
-                    .appendQueryParameter("method", "flickr..photos.getRecent")
+                    .appendQueryParameter("method", "flickr.photos.getRecent")
                     .appendQueryParameter("api_key", API_KEY)
                     .appendQueryParameter("format", "json")
                     .appendQueryParameter("nojsoncallback", "1")
@@ -66,7 +66,8 @@ public class FlickrFetchr {
         }
         return items;
     }
-    private void parseItems(List<GalleryItem>items, JSONObject jsonBody) throws IOException, JSONException {
+    private void parseItems(List<GalleryItem>items, JSONObject jsonBody)
+            throws IOException, JSONException {
         JSONObject photosJsonObject = jsonBody.getJSONObject("photos");
         JSONArray photoJsonArray = photosJsonObject.getJSONArray("photo");
         for (int i = 0; i < photoJsonArray.length(); i++) {

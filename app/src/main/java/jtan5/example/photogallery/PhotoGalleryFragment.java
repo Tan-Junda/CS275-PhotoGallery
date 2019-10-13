@@ -30,9 +30,9 @@ public class PhotoGalleryFragment extends Fragment {
         return new PhotoGalleryFragment();
     }
 
-    private class FetchItemsTask extends AsyncTask< Void, Void, List<GalleryItem> > {
+    private class FetchItemsTask extends AsyncTask< Void, Void, List<GalleryItem>> {
         @Override
-        protected List<GalleryItem> doInBackground(Void... parms) {
+        protected List<GalleryItem> doInBackground(Void... params) {
             return new FlickrFetchr().fetchItems();
         }
         @Override
