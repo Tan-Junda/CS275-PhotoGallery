@@ -86,8 +86,9 @@ public class PhotoGalleryFragment extends Fragment {
         }
         @Override
         public PhotoHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-            TextView textView = new TextView(getActivity());
-            return new PhotoHolder(textView);
+           LayoutInflater inflater = LayoutInflater.from(getActivity());
+           View view = inflater.inflate(R.layout.list_item_gallery, viewGroup, false);
+           return new PhotoHolder(view);
         }
         @Override
         public void onBindViewHolder(PhotoHolder photoHolder, int position) {
