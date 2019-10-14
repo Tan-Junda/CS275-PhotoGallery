@@ -100,6 +100,7 @@ public class PhotoGalleryFragment extends Fragment {
             GalleryItem galleryItem = mGalleryItems.get(position);
             Drawable placeholder = getResources().getDrawable(R.drawable.bill_up_close);
             photoHolder.bindDrawable(placeholder);
+            mThumbnailDownloader.queueThumbnail(photoHolder, galleryItem.getmUrl());
         }
 
         @Override

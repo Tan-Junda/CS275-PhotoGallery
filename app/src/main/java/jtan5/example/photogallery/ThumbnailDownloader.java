@@ -4,8 +4,14 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 public class ThumbnailDownloader<T> extends HandlerThread {
     private static final String TAG = "ThumbnailDownloader";
+    private static final int MESSAGE_DOWNLOAD = 0;
+    private Handler mReuqestHandler;
+    private ConcurrentMap<T, String> mRequestMap = new ConcurrentHashMap<>();
     private Boolean mHasQuit = false;
     public ThumbnailDownloader() {
         super(TAG);
@@ -17,7 +23,7 @@ public class ThumbnailDownloader<T> extends HandlerThread {
     }
 
     public void queueThumbnail(T target, String url) {
-        Log.i(TAG, "Goat a URL: " + url);
+        Log.i(TAG, "Got a URL: " + url);
     }
 
 
