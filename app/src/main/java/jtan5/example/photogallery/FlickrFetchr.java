@@ -53,7 +53,7 @@ public class FlickrFetchr {
         return new String(getUrlBytes(urlSpec));
     }
 
-    private List<GalleryItem> fetchItems(String url) {
+    private List<GalleryItem> downloadGalleryItems(String url) {
         List<GalleryItem> items = new ArrayList<>();
         try {
             String jsonString = getUrlString(url);
@@ -92,5 +92,14 @@ public class FlickrFetchr {
         }
         return uriBuilder.build().toString();
     }
+    public List<GalleryItem> fetchRecentPhotos() {
+        String url = buildUrl(FETCH_RECENTS_METHOD, null);
+        return downloadGalleryItems(url);
+    }
+    public List<GalleryItem> serachPhotos(String query) {
+        String url = buildUrl (SEARCH_METHOD, query);
+        return downloadGalleryItems(url);
+    }
+
 }
 
