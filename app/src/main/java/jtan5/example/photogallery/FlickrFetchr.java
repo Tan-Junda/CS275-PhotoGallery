@@ -96,7 +96,7 @@ public class FlickrFetchr {
         String url = buildUrl(FETCH_RECENTS_METHOD, null);
         return downloadGalleryItems(url);
     }
-    public List<GalleryItem> serachPhotos(String query) {
+    public List<GalleryItem> searchPhotos(String query) {
         String url = buildUrl (SEARCH_METHOD, query);
         return downloadGalleryItems(url);
     }
