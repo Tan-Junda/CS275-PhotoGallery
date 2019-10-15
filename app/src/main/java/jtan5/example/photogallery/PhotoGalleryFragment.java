@@ -23,9 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class PhotoGalleryFragment extends Fragment {
     private RecyclerView mPhotoRecyclerView;
     private static final String TAG = "PhotoGalleryFragment";
@@ -36,17 +33,6 @@ public class PhotoGalleryFragment extends Fragment {
         return new PhotoGalleryFragment();
     }
 
-    private class FetchItemsTask extends AsyncTask< Void, Void, List<GalleryItem>> {
-        @Override
-        protected List<GalleryItem> doInBackground(Void... params) {
-            return new FlickrFetchr().fetchItems();
-        }
-        @Override
-        protected void onPostExecute(List<GalleryItem> items) {
-            mItems = items;
-            setupAdapter();
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +40,7 @@ public class PhotoGalleryFragment extends Fragment {
         setRetainInstance(true);
         new FetchItemsTask().execute();
         Handler responseHandler = new Handler();
-        mThumbnailDownloader = new ThumbnailDownloader(responseHandler);
+        mThumbnailDownloader = new ThumbnailDownloader<>(responseHandler);
         mThumbnailDownloader.setThumbnailDownloadListener(
             new ThumbnailDownloader.ThumbnailDownloadListener<PhotoHolder>() {
                 @Override
@@ -85,6 +71,17 @@ public class PhotoGalleryFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mThumbnailDownloader.quit();
+        Log.i(TAG, "Background thread destroyed");
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mThumbnailDownloader.clearQueue();
+    }
 
     private class PhotoHolder extends RecyclerView.ViewHolder {
         private ImageView mItemImageView;
@@ -122,16 +119,18 @@ public class PhotoGalleryFragment extends Fragment {
         }
 
     }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mThumbnailDownloader.quit();
-        Log.i(TAG, "Background thread destroyed");
-    }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mThumbnailDownloader.clearQueue();
+
+
+    private class FetchItemsTask extends AsyncTask< Void, Void, List<GalleryItem>> {
+        @Override
+        protected List<GalleryItem> doInBackground(Void... params) {
+            return new FlickrFetchr().fetchItems();
+        }
+        @Override
+        protected void onPostExecute(List<GalleryItem> items) {
+            mItems = items;
+            setupAdapter();
+        }
     }
 }
 
