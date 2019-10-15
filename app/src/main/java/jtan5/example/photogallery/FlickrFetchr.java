@@ -83,4 +83,14 @@ public class FlickrFetchr {
             items.add(item);
         }
     }
+    private String buildUrl (String method, String query) {
+        Uri.Builder uriBuilder = ENDPOINT.buildUpon()
+                .appendQueryParameter("method", method);
+        if (method.equals(SEARCH_METHOD)) {
+            uriBuilder.appendQueryParameter("text", query);
+
+        }
+        return uriBuilder.build().toString();
+    }
 }
+
