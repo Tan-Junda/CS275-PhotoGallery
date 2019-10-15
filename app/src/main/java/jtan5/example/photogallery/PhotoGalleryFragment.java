@@ -56,13 +56,13 @@ public class PhotoGalleryFragment extends Fragment {
         Handler responseHandler = new Handler();
         mThumbnailDownloader = new ThumbnailDownloader(responseHandler);
         mThumbnailDownloader.setThumbnailDownloadListener(
-                new ThumbnailDownloader.ThumbnailDownloadListener<PhotoHolder>() {
-                    @Override
-                    public void onThumbnailDownloaded(PhotoHolder photoHolder, Bitmap bitmap) {
-                        Drawable drawable = new BitmapDrawable(getResources(), bitmap);
-                        photoHolder.bindDrawable(drawable);
-                    }
+            new ThumbnailDownloader.ThumbnailDownloadListener<PhotoHolder>() {
+                @Override
+                public void onThumbnailDownloaded(PhotoHolder photoHolder, Bitmap bitmap) {
+                    Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+                    photoHolder.bindDrawable(drawable);
                 }
+            }
         );
         mThumbnailDownloader.start();
         mThumbnailDownloader.getLooper();
@@ -128,4 +128,10 @@ public class PhotoGalleryFragment extends Fragment {
         mThumbnailDownloader.quit();
         Log.i(TAG, "Background thread destroyed");
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mThumbnailDownloader.clearQueue();
+    }
 }
+
