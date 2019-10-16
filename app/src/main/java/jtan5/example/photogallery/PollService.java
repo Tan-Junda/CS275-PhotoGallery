@@ -2,15 +2,20 @@ package jtan5.example.photogallery;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.os.SystemClock;
 import android.util.Log;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 public class PollService extends IntentService {
     private static final String TAG = "PollService";
@@ -46,6 +51,19 @@ public class PollService extends IntentService {
             Log.i(TAG, "Got an old result: " + resultId);
         } else {
             Log.i(TAG, "Got a new result; " + resultId);
+            Resources resources =  getResources();
+            Intent i = PhotoGalleryActivity.newIntent(this);
+            PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
+            Notification notification = new NotificationCompat.Builder(this)
+                    .setTicker(resources.getString(R.string.new_pictures_)
+                            .setSmallIcon(android.R.drawable.ic_menu-report_image)
+                            .setContentTitle(resources.getString(R.string.new_picture))
+                            .setContentText(resources.getString(R.string.new_pictire))
+                                .setContentIntent(pi)
+                                .setAutoCancel(true)
+                                .build());
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            notificationManager.notify(0,notification);
         }
         QueryPreferences.setLastResultId(this, resultId );
     }
