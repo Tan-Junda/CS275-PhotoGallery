@@ -1,6 +1,7 @@
 package jtan5.example.photogallery;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -95,6 +96,8 @@ public class PhotoGalleryFragment extends Fragment {
                 Log.d(TAG, "QueryTextSubmit: " + s);
                 QueryPreferences.setStoredQuery(getActivity(), s);
                 updateItems();
+                Intent i = PollService.newIntent(getActivity());
+                getActivity().startService(i);
                 return true;
             }
             @Override
