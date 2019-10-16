@@ -119,8 +119,7 @@ public class PhotoGalleryFragment extends Fragment {
             case R.id.menu_item_clear:
                 QueryPreferences.setStoredQuery(getActivity(), null);
                 updateItems();
-                Intent i = PollService.newIntent(getActivity());
-                getActivity().startService(i);
+                PollService.setServiceAlarm(getActivity(), true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
