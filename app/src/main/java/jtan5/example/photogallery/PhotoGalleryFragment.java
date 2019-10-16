@@ -96,8 +96,6 @@ public class PhotoGalleryFragment extends Fragment {
                 Log.d(TAG, "QueryTextSubmit: " + s);
                 QueryPreferences.setStoredQuery(getActivity(), s);
                 updateItems();
-                Intent i = PollService.newIntent(getActivity());
-                getActivity().startService(i);
                 return true;
             }
             @Override
@@ -121,6 +119,8 @@ public class PhotoGalleryFragment extends Fragment {
             case R.id.menu_item_clear:
                 QueryPreferences.setStoredQuery(getActivity(), null);
                 updateItems();
+                Intent i = PollService.newIntent(getActivity());
+                getActivity().startService(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -3,7 +3,10 @@ package jtan5.example.photogallery;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.util.Log;
+
+import java.util.List;
 
 public class PollService extends IntentService {
     private static final String TAG = "PollService";
@@ -18,6 +21,34 @@ public class PollService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i(TAG, "Received an intent: " + intent);
+        if (!isNetworkAvailableAndConnected()) {
+            return;
+        }
+        String query = QueryPreferences.getStoredQuery(this);
+        String lastResultId = QueryPreferences.getLastResultId(this);
+        List<GalleryItem>items;
+        if (query == null) {
+            items = new
+                    FlickrFetchr().fetchRecentPhotos();
+        } else {
+            items = new FlickrFetchr().searchPhotos(query);
+        }
+        if (items.size() == 0) {
+            return;
+        }
+        String resultId = items.get(0).getmId();
+        if (resultId.equals(lastResultId)) {
+            Log.i(TAG, "Got an old result: " + resultId);
+        } else {
+            Log.i(TAG, "Got a new result; " + resultId);
+        }
+        QueryPreferences.setLastResultId(this, resultId );
+    }
+
+    private boolean isNetworkAvailableAndConnected() {
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+        boolean isNetworkAvailable = cm.getActiveNetwork() != null;
+        boolean isNetworkConnected = isNetworkAvailable && cm.getActiveNetworkInfo().isConnected();
+        return isNetworkConnected;
     }
 }
