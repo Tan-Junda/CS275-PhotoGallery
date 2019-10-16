@@ -35,9 +35,7 @@ public class PhotoGalleryFragment extends Fragment {
     private List<GalleryItem> mItems = new ArrayList<>();
     private ThumbnailDownloader<PhotoHolder> mThumbnailDownloader;
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, PhotoGalleryActivity.class);
-    }
+
     public static PhotoGalleryFragment newInstance()
     {
         return new PhotoGalleryFragment();
