@@ -19,7 +19,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 public class PollService extends IntentService {
     private static final String TAG = "PollService";
-    private static final long POLL_INTERVAL_MS = TimeUnit.MINUTES.toMillis(15);
+    private static final long POLL_INTERVAL_MS = TimeUnit.MINUTES.toMillis(1);
     public static Intent newIntent(Context context) {
         return new Intent(context, PollService.class);
     }
@@ -34,6 +34,7 @@ public class PollService extends IntentService {
         if (!isNetworkAvailableAndConnected()) {
             return;
         }
+        Log.i(TAG, "Received an intent: " + intent);
         String query = QueryPreferences.getStoredQuery(this);
         String lastResultId = QueryPreferences.getLastResultId(this);
         List<GalleryItem>items;
@@ -69,9 +70,11 @@ public class PollService extends IntentService {
     }
 
     private boolean isNetworkAvailableAndConnected() {
-        ConnectivityManager cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
-        boolean isNetworkAvailable = cm.getActiveNetwork() != null;
-        boolean isNetworkConnected = isNetworkAvailable && cm.getActiveNetworkInfo().isConnected();
+        ConnectivityManager cm = (ConnectivityManager)
+                getSystemService(CONNECTIVITY_SERVICE);
+        boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
+        boolean isNetworkConnected = isNetworkAvailable &&
+                cm.getActiveNetworkInfo().isConnected();
         return isNetworkConnected;
     }
     public static void setServiceAlarm(Context context, boolean isOn) {
