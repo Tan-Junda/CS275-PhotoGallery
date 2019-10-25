@@ -1,6 +1,7 @@
 package jtan5.example.photogallery;
 
 import android.app.AlarmManager;
+import android.app.DownloadManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -88,6 +89,7 @@ public class PollService extends IntentService {
             alarmManager.cancel(pi);
             pi.cancel();
         }
+        QueryPreferences.setAlarmOn(context, isOn);
     }
 
     public static boolean isServiceAlarmOn(Context context) {
